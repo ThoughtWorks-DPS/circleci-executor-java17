@@ -93,6 +93,21 @@ a=( ${version//./ } )
 
 # Increment version numbers as requested.
 
+if [ -z "${a[0]}" ]
+then
+  a[0]=0
+fi
+
+if [ -z "${a[1]}" ]
+then
+  a[1]=0
+fi
+
+if [ -z "${a[2]}" ]
+then
+  a[2]=0
+fi
+
 if [ -n "${patch}" ]
 then
   ((a[2]++))
