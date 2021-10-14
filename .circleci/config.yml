@@ -1,0 +1,134 @@
+---
+version: 2.1
+
+orbs:
+  executor-tools: twdps/executor-tools@dev:latest
+
+on-push-main: &on-push-main
+  branches:
+    only: /main/
+  tags:
+    ignore: /.*/
+
+on-tag-main: &on-tag-main
+  branches:
+    ignore: /.*/
+  tags:
+    only: /.*/
+
+workflows:
+  version: 2
+  alpine-image-pipeline:
+    jobs:
+      - executor-tools/machine-executor-dev-release:
+          name: alpine-dev-build
+          context: twdps-di
+          dockerfile: Dockerfile.alpine
+          image: twdps/circleci-executor-java17
+          tag: alpine-edge
+          docker-cve-scan: true
+          snyk-organization: twdps
+          cis-docker-image-scan: true
+          skip-base-image: true
+          bats-test: true
+          test-path: test/circleci_executor_java17_alpine.bats
+          container-name: circleci-executor-java17-alpine-edge
+          after-checkout:
+            - run:
+                name: inject environment variables
+                command: |
+                  secrethub inject -i secrethub.env -o $BASH_ENV
+                  source $BASH_ENV
+          filters: *on-push-main
+
+      - executor-tools/publish:
+          shell: secrethub run -- /bin/sh -eo pipefail
+          name: alpine-release
+          context: twdps-di
+          pull-tag: alpine-edge
+          tag-annotation: alpine-
+          image: twdps/circleci-executor-java17
+          release-tag: alpine-stable
+          filters: *on-tag-main
+
+  slim-image-pipeline:
+    jobs:
+      - executor-tools/machine-executor-dev-release:
+          name: slim-dev-build
+          context: twdps-di
+          dockerfile: Dockerfile.slim
+          image: twdps/circleci-executor-java17
+          tag: slim-edge
+          docker-cve-scan: false
+          snyk-organization: twdps
+          cis-docker-image-scan: true
+          skip-base-image: true
+          bats-test: true
+          test-path: test/circleci_executor_java17_slim.bats
+          container-name: circleci-executor-java17-slim-edge
+          after-checkout:
+            - run:
+                name: inject environment variables
+                command: |
+                  secrethub inject -i secrethub.env -o $BASH_ENV
+                  source $BASH_ENV
+          filters: *on-push-main
+
+      - executor-tools/publish:
+          shell: secrethub run -- /bin/sh -eo pipefail
+          name: slim-release
+          context: twdps-di
+          pull-tag: slim-edge
+          tag-annotation: slim-
+          image: twdps/circleci-executor-java17
+          release-tag: slim-stable
+          filters: *on-tag-main
+
+  # builds nightly from .unpinned Dockerfile in order to test the latest base image and installed packages
+  circleci-executor-java17-nightly-build:
+    triggers:
+      - schedule:
+          cron: "0 0 1 * *"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - executor-tools/machine-executor-dev-release:
+          name: alpine-nightly-build
+          context: twdps-di
+          dockerfile: Dockerfile.alpine
+          image: twdps/circleci-executor-java17
+          tag: alpine-nightly
+          docker-cve-scan: true
+          snyk-organization: twdps
+          cis-docker-image-scan: true
+          skip-base-image: true
+          bats-test: true
+          test-path: test/circleci_executor_java17_alpine.bats
+          container-name: circleci-executor-java17-alpine-nightly
+          after-checkout:
+            - run:
+                name: inject environment variables
+                command: |
+                  secrethub inject -i secrethub.env -o $BASH_ENV
+                  source $BASH_ENV
+      - executor-tools/machine-executor-dev-release:
+          name: slim-nightly-build
+          context: twdps-di
+          dockerfile: Dockerfile.slim
+          image: twdps/circleci-executor-java17
+          tag: slim-nightly
+          docker-cve-scan: true
+          snyk-organization: twdps
+          cis-docker-image-scan: true
+          skip-base-image: true
+          bats-test: true
+          test-path: test/circleci_executor_java17_slim.bats
+          container-name: circleci-executor-java17-slim-nightly
+          after-checkout:
+            - run:
+                name: inject environment variables
+                command: |
+                  secrethub inject -i secrethub.env -o $BASH_ENV
+                  source $BASH_ENV

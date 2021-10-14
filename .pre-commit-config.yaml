@@ -1,0 +1,58 @@
+---
+repos:
+  - repo: https://github.com/thoughtworks/talisman
+    rev: v1.11.0
+    hooks:
+      - id: talisman-commit
+        stages: &commit-stage [commit]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: check-executables-have-shebangs
+      - id: check-symlinks
+      - id: check-merge-conflict
+      - id: check-added-large-files
+      - id: check-json
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: forbid-new-submodules
+      - id: detect-private-key
+      - id: detect-aws-credentials
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: check-case-conflict
+      - id: pretty-format-json
+        args:
+          - --no-sort-keys
+          - --autofix
+        files: \.json(\.tpl)?$
+        types: [ text ]
+  - repo: local
+    hooks:
+      - id: git-secrets
+        name: git-secrets
+        entry: git-secrets
+        language: system
+        args: ["--scan"]
+  - repo: local
+    hooks:
+      - id: hadolint
+        name: hadolint
+        entry: hadolint
+        language: system
+        exclude: ^Dockerfile.alpine.unpinned, ^Dockerfile.slim.unpinned
+        files: ^Dockerfile.alpine, ^Dockerfile.slim
+  - repo: local
+    hooks:
+      - id: shellcheck
+        name: shellcheck
+        minimum_pre_commit_version: 2.4.0
+        entry: ./scripts/shellcheck.sh
+        language: script
+        types: [shell]
+  - repo: https://github.com/punitlad/git-mob
+    rev: f111493
+    hooks:
+      - id: add-coauthors
+        stages: [prepare-commit-msg]

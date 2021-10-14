@@ -1,0 +1,5 @@
+fileignoreconfig:
+- filename: secrethub.env
+  checksum: 5b8c615a35aa2c129ce73c7de235c881aaf4c7f6bf6feea50251e92b97eb79ea
+- filename: scripts/release.sh
+  checksum: 7ca541a53c790e3a5c4f6635eab76af900aede3cca0724edc1fc9b0570bae3a2
