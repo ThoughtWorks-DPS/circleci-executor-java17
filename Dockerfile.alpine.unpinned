@@ -34,8 +34,9 @@ RUN apk add --no-cache \
 RUN apk add --no-cache \
     openjdk11==11.0.11_p9-r0 \
     openjdk16==16.0.2_p7-r0 \
-    openjdk17==17.0.0_p35-r1 \
-    --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing
+    openjdk17==17.0.1_p12-r0 \
+    --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing \
+    --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community
 
 #RUN sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
 #    chmod +x /usr/local/bin/docker-compose

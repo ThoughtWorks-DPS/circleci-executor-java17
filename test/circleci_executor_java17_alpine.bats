@@ -5,9 +5,9 @@
   run bash -c "docker exec circleci-executor-java17-alpine-edge apk -v info"
 #  echo "# ${output}" >&3
 #  [[ "${output}" =~ "libintl-0.21-r0" ]]
-  [[ "${output}" =~ "openjdk17-jre-17.0.0_p35-r1" ]]
-  [[ "${output}" =~ "openjdk17-jdk-17.0.0_p35-r1" ]]
-  [[ "${output}" =~ "openjdk17-17.0.0_p35-r1" ]]
+  [[ "${output}" =~ "openjdk17-jre-17.0.1_p12-r0" ]]
+  [[ "${output}" =~ "openjdk17-jdk-17.0.1_p12-r0" ]]
+  [[ "${output}" =~ "openjdk17-17.0.1_p12-r0" ]]
   [[ "${output}" =~ "openjdk16-jre-16.0.2_p7-r0" ]]
   [[ "${output}" =~ "openjdk16-jdk-16.0.2_p7-r0" ]]
   [[ "${output}" =~ "openjdk16-16.0.2_p7-r0" ]]

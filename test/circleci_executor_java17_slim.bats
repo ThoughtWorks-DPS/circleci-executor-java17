@@ -4,7 +4,7 @@
 @test "evaluate installed package versions" {
   run bash -c "docker exec circleci-executor-java17-slim-edge apt list --installed"
   echo "# ${output}" >&3
-  [[ "${output}" =~ "openjdk-17-jdk/now 17+35-1" ]]
+  [[ "${output}" =~ "openjdk-17-jdk/now 17.0.1+12-1" ]]
   [[ "${output}" =~ "shellcheck/now 0.7.2-2+b1" ]]
   [[ "${output}" =~ "colordiff/now 1.0.18-1.1" ]]
   [[ "${output}" =~ "python3.9/now 3.9.7-2" ]]
@@ -32,7 +32,7 @@
 @test "java version" {
   run bash -c "docker exec circleci-executor-java17-slim-edge java -version"
   echo "# ${output}" >&3
-  [[ "${output}" =~ "17+35-Debian-1" ]]
+  [[ "${output}" =~ "17.0.1+12-Debian-1" ]]
 }
 
 @test "spectral version" {
