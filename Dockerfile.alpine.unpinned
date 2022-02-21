@@ -32,9 +32,9 @@ RUN apk add --no-cache \
 
 # packages required for use as a circleci java primary container
 RUN apk add --no-cache \
-    openjdk11==11.0.13_p8-r0 \
-    openjdk16==16.0.2_p7-r0 \
-    openjdk17==17.0.1_p12-r0 \
+    openjdk11==11.0.14_p9-r0 \
+    openjdk16==16.0.2_p7-r1 \
+    openjdk17==17.0.2_p8-r1 \
     --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing \
     --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community
 
