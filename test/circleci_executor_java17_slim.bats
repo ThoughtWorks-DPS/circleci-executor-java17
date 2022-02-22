@@ -7,14 +7,14 @@
   [[ "${output}" =~ "openjdk-17-jdk/now 17.0.2+8-1" ]]
   [[ "${output}" =~ "shellcheck/now 0.8.0-2" ]]
   [[ "${output}" =~ "colordiff/now 1.0.18-1.1" ]]
-  [[ "${output}" =~ "python3.9/now 3.9.7-2" ]]
+  [[ "${output}" =~ "python3.9/now 3.9.10-2" ]]
   [[ "${output}" =~ "python3-pip/now 22.0.2+dfsg-1" ]]
 }
 
 @test "python3 version" {
   run bash -c "docker exec circleci-executor-java17-slim-edge python3 --version"
   echo "# ${output}" >&3
-  [[ "${output}" =~ "3.9.7" ]]
+  [[ "${output}" =~ "3.9.10" ]]
 }
 
 @test "pip version" {
